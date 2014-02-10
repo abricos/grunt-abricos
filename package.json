@@ -1,6 +1,6 @@
 {
   "name": "grunt-abricos",
-  "description": "Build site by Abricos Platform",
+  "description": "Grunt plugin for Abricos Platform",
   "version": "0.1.0",
   "homepage": "https://github.com/abricos/grunt-abricos",
   "author": {
