@@ -1,6 +1,6 @@
 # grunt-abricos
 
-> Build site by Abricos Platform
+> Grunt plugin for Abricos Platform
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
@@ -17,14 +17,14 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-abricos');
 ```
 
-## The "abricos" task
+## The "abcore" task
 
 ### Overview
-In your project's Gruntfile, add a section named `abricos` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `abcore` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  abricos: {
+  abcore: {
     options: {
       // Task-specific options go here.
     },
@@ -37,53 +37,145 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
-
-A string value that is used to do something with whatever.
-
-#### options.punctuation
+#### options.directory
 Type: `String`
 Default value: `'.'`
 
-A string value that is used to do something else with whatever else.
+Project directory.
 
-### Usage Examples
+#### options.buildDir
+Type: `String`
+Default value: `'build'`
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+Building directory.
 
-```js
-grunt.initConfig({
-  abricos: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+## The "abvendor" task
+
+### Overview
+Sets the dependent party components.
+
+In your project's Gruntfile, add a section named `abvendor` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  abricos: {
+  abvendor: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      // Task-specific options go here.
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+    your_target: {
+      // Target-specific file lists and/or options go here.
     },
   },
 });
 ```
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+### Options
+
+#### options.directory
+Type: `String`
+Default value: `'.'`
+
+Project directory.
+
+#### options.buildDir
+Type: `String`
+Default value: `'build/vendor'`
+
+Building directory.
+
+#### options.cleanBuildDir
+Type: `Boolean`
+Default value: `true`
+
+Clean directory before building project.
+
+#### options.install
+Type: `Boolean`
+Default value: `true`
+
+Download dependent components.
+
+
+## The "abmodule" task
+
+### Overview
+In your project's Gruntfile, add a section named `abmodule` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  abmodule: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    },
+  },
+});
+```
+
+### Options
+
+#### options.directory
+Type: `String`
+Default value: `'.'`
+
+Project directory.
+
+#### options.buildDir
+Type: `String`
+Default value: `'build'`
+
+Building directory.
+
+#### options.cleanBuildDir
+Type: `Boolean`
+Default value: `true`
+
+Clean directory before building project.
+
+
+## The "abtemplate" task
+
+### Overview
+In your project's Gruntfile, add a section named `abtemplate` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  abtemplate: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    },
+  },
+});
+```
+
+### Options
+
+#### options.directory
+Type: `String`
+Default value: `'.'`
+
+Project directory.
+
+#### options.buildDir
+Type: `String`
+Default value: `'build'`
+
+Building directory.
+
+#### options.cleanBuildDir
+Type: `Boolean`
+Default value: `true`
+
+Clean directory before building project.
+
 
 ## Release History
-_(Nothing yet)_
+
+ * 2014-02-10   v0.1.0   First official release for Grunt 0.4.2.
+
