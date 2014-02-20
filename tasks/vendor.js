@@ -122,7 +122,7 @@ module.exports = function(grunt) {
         bower.commands.install([], {}, {
             cwd: projectDir
         }).on('log', function(result) {
-                grunt.log.writeln(['bower', result.id.cyan, result.message].join(' '));
+            grunt.log.writeln(['bower', result.id.cyan, result.message].join(' '));
         }).on('end', function() {
             grunt.log.writeln(['bower install'].join(' '));
             callback(null);

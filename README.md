@@ -177,5 +177,12 @@ Clean directory before building project.
 
 ## Release History
 
- * 2014-02-10   v0.1.0   First official release for Grunt 0.4.2.
 
+### 0.1.1 - 2014-02-20
+
+- Build LESS in Abricos Module
+
+
+### 0.1.0 - 2014-02-10
+
+ - First official release for Grunt 0.4.2.
