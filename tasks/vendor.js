@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         var bowerJsonFile = path.join(projectDir, 'bower.json');
 
         if (!grunt.file.exists(bowerJsonFile)) {
-            grunt.log.warn('Bower.json in "' + projectDir + '" not found.');
+            // grunt.log.warn('Bower.json in "' + projectDir + '" not found.');
             return;
         }
 
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
         var bowerJsonFile = path.join(projectDir, 'bower.json');
 
         if (!grunt.file.exists(bowerJsonFile)) {
-            return;
+            return callback();
         }
 
         bower.commands.install([], {}, {
