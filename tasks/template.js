@@ -9,21 +9,24 @@
 
 'use strict';
 
+var async = require('async');
 var path = require('path');
 var fse = require('fs-extra');
 
-module.exports = function(grunt) {
+var less = require('../lib/less.js');
+
+module.exports = function (grunt) {
 
     // ------------ Abricos Template Builder -------------
 
-    var checkAbricosTemplate = function(projectDir) {
+    var checkAbricosTemplate = function (projectDir) {
         var mainFile = path.join(projectDir, 'src', 'main.html');
         var isExists = grunt.file.exists(mainFile);
 
         return isExists;
     };
 
-    grunt.registerMultiTask('abtemplate', 'Build Abricos Template', function() {
+    grunt.registerMultiTask('abtemplate', 'Build Abricos Template', function () {
 
         var options = this.options({
             directory: process.cwd(),
@@ -48,12 +51,31 @@ module.exports = function(grunt) {
         }
 
         var done = this.async();
-        fse.copy(srcDir, buildDir, function(err) {
-            if (err) {
-                grunt.log.warn(err);
-            }
-            done();
+        var stack = [];
+
+        // LESS
+        stack.push(function (stackCallback) {
+            var lessSrcDir = path.join(srcDir, 'less');
+            var lessDestDir = path.join(srcDir, 'css');
+            less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
         });
 
+        // copy
+        stack.push(function (stackCallback) {
+            fse.copy(srcDir, buildDir, function (err) {
+                if (err) {
+                    grunt.log.warn(err);
+                }
+                stackCallback(err);
+            });
+        });
+
+        async.series(stack, function (err) {
+            if (err) {
+                done(false);
+            } else {
+                done();
+            }
+        });
     });
 };
