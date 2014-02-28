@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         // LESS
         stack.push(function (stackCallback) {
             var lessSrcDir = path.join(srcDir, 'less');
-            var lessDestDir = path.join(srcDir, 'css');
+            var lessDestDir = path.join(buildDir, 'css');
             less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
         });
 
