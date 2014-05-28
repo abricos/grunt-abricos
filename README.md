@@ -178,6 +178,11 @@ Clean directory before building project.
 ## Release History
 
 
+### 0.1.4 - 2014-05-28
+
+- Build LESS in JS Component in Abricos Module
+
+
 ### 0.1.3 - 2014-02-27
 
 - Build LESS in Abricos Template

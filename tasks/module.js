@@ -12,6 +12,7 @@
 var path = require('path');
 var fse = require('fs-extra');
 var async = require('async');
+var glob = require('glob');
 
 var less = require('../lib/less.js');
 
@@ -61,6 +62,13 @@ module.exports = function (grunt) {
             less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
         });
 
+        // LESS in Components
+        stack.push(function (stackCallback) {
+            var lessSrcDir = path.join(srcDir, 'js');
+            var lessDestDir = path.join(buildDir, 'js');
+            less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
+        });
+
         // JS Components
 
         // copy
@@ -71,6 +79,21 @@ module.exports = function (grunt) {
                 }
                 stackCallback(err);
             });
+        });
+
+        // Delete work files
+        stack.push(function (stackCallback) {
+
+            var lessDestDir = path.join(buildDir, 'less');
+            grunt.file.delete(lessDestDir);
+
+            var globFiles = glob.sync(path.join(buildDir, 'js/*.less'));
+            for (var i = 0; i < globFiles.length; i++){
+                var file = globFiles[i];
+                grunt.file.delete(file);
+            }
+
+            stackCallback(null);
         });
 
         async.series(stack, function (err) {
