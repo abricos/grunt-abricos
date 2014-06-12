@@ -11,6 +11,9 @@
 
 var path = require('path');
 var fse = require('fs-extra');
+var async = require('async');
+
+var less = require('../lib/less.js');
 
 module.exports = function(grunt) {
 
@@ -41,11 +44,41 @@ module.exports = function(grunt) {
         var buildDir = path.resolve(projectDir, options.buildDir);
 
         var done = this.async();
-        fse.copy(srcDir, buildDir, function(err) {
-            if (err) {
-                grunt.log.warn(err);
+        var stack = [];
+
+        // LESS
+        stack.push(function (stackCallback) {
+            var lessSrcDir = path.join(srcDir, 'tt/default/less');
+            var lessDestDir = path.join(buildDir, 'tt/default/css');
+            less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
+        });
+
+        // copy
+        stack.push(function(stackCallback){
+            fse.copy(srcDir, buildDir, function(err) {
+                if (err) {
+                    grunt.log.warn(err);
+                }
+                stackCallback(err);
+            });
+        });
+
+        // Delete work files
+        stack.push(function (stackCallback) {
+            var lessDestDir = path.join(buildDir, 'tt/default/less');
+            if (grunt.file.exists(lessDestDir)){
+                grunt.file.delete(lessDestDir);
             }
-            done();
+
+            stackCallback(null);
+        });
+
+        async.series(stack, function (err) {
+            if (err) {
+                done(false);
+            } else {
+                done();
+            }
         });
     });
 };

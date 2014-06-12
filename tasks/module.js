@@ -85,7 +85,9 @@ module.exports = function (grunt) {
         stack.push(function (stackCallback) {
 
             var lessDestDir = path.join(buildDir, 'less');
-            grunt.file.delete(lessDestDir);
+            if (grunt.file.exists(lessDestDir)){
+                grunt.file.delete(lessDestDir);
+            }
 
             var globFiles = glob.sync(path.join(buildDir, 'js/*.less'));
             for (var i = 0; i < globFiles.length; i++){
