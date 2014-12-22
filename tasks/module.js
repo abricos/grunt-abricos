@@ -11,6 +11,7 @@
 
 var path = require('path');
 var fse = require('fs-extra');
+var fs = require('fs');
 var async = require('async');
 var glob = require('glob');
 
@@ -48,9 +49,9 @@ module.exports = function(grunt){
         var srcDir = path.resolve(projectDir, 'src');
         var buildDir = path.resolve(projectDir, options.buildDir);
 
-        if (options.cleanBuildDir && grunt.file.exists(buildDir)){
+        if (options.cleanBuildDir && fs.existsSync(buildDir)){
             // Clean build directory
-            grunt.file.delete(buildDir);
+            fse.removeSync(buildDir);
         }
 
         var done = this.async();
@@ -70,26 +71,20 @@ module.exports = function(grunt){
 
         // copy
         stack.push(function(stackCallback){
-            fse.copy(srcDir, buildDir, function(err){
-                if (err){
-                    grunt.log.warn(err);
-                }
-                stackCallback(err);
-            });
+            fse.copySync(srcDir, buildDir);
+            stackCallback(null);
         });
 
         // Delete work files
         stack.push(function(stackCallback){
 
             var lessDestDir = path.join(buildDir, 'less');
-            if (grunt.file.exists(lessDestDir)){
-                grunt.file.delete(lessDestDir);
-            }
+            fse.removeSync(lessDestDir);
 
             var globFiles = glob.sync(path.join(buildDir, 'js/*.less'));
             for (var i = 0; i < globFiles.length; i++){
                 var file = globFiles[i];
-                grunt.file.delete(file);
+                fse.removeSync(file);
             }
 
             stackCallback(null);

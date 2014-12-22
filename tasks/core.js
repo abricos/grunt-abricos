@@ -10,6 +10,7 @@
 'use strict';
 
 var path = require('path');
+var fs = require('fs');
 var fse = require('fs-extra');
 var async = require('async');
 
@@ -21,7 +22,7 @@ module.exports = function(grunt) {
 
     var checkAbricosCore = function(projectDir) {
         var fileModulePhp = path.join(projectDir, 'src', 'index.php');
-        var isExists = grunt.file.exists(fileModulePhp);
+        var isExists = fs.existsSync(fileModulePhp);
 
         return isExists;
     };
@@ -55,20 +56,14 @@ module.exports = function(grunt) {
 
         // copy
         stack.push(function(stackCallback){
-            fse.copy(srcDir, buildDir, function(err) {
-                if (err) {
-                    grunt.log.warn(err);
-                }
-                stackCallback(err);
-            });
+            fse.copySync(srcDir, buildDir);
+            stackCallback(null);
         });
 
         // Delete work files
         stack.push(function (stackCallback) {
             var lessDestDir = path.join(buildDir, 'tt/default/less');
-            if (grunt.file.exists(lessDestDir)){
-                grunt.file.delete(lessDestDir);
-            }
+            fse.removeSync(lessDestDir);
 
             stackCallback(null);
         });
