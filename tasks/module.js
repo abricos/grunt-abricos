@@ -15,19 +15,20 @@ var async = require('async');
 var glob = require('glob');
 
 var less = require('../lib/less.js');
+var jscomp = require('../lib/jscomp.js');
 
-module.exports = function (grunt) {
+module.exports = function(grunt){
 
     // ------------ Abricos Module Builder -------------
 
-    var checkAbricosModule = function (projectDir) {
+    var checkAbricosModule = function(projectDir){
         var fileModulePhp = path.join(projectDir, 'src', 'module.php');
         var isExists = grunt.file.exists(fileModulePhp);
 
         return isExists;
     };
 
-    grunt.registerMultiTask('abmodule', 'Build Abricos Module', function () {
+    grunt.registerMultiTask('abmodule', 'Build Abricos Module', function(){
 
         var options = this.options({
             directory: process.cwd(),
@@ -39,7 +40,7 @@ module.exports = function (grunt) {
         var projectDir = options.directory;
 
         var isModule = checkAbricosModule(projectDir);
-        if (!isModule) {
+        if (!isModule){
             grunt.log.warn('Abricos module "' + projectDir + '" not found.');
             return;
         }
@@ -47,7 +48,7 @@ module.exports = function (grunt) {
         var srcDir = path.resolve(projectDir, 'src');
         var buildDir = path.resolve(projectDir, options.buildDir);
 
-        if (options.cleanBuildDir && grunt.file.exists(buildDir)) {
+        if (options.cleanBuildDir && grunt.file.exists(buildDir)){
             // Clean build directory
             grunt.file.delete(buildDir);
         }
@@ -55,26 +56,22 @@ module.exports = function (grunt) {
         var done = this.async();
         var stack = [];
 
+        // JS Component
+        stack.push(function(stackCallback){
+            jscomp(grunt, options, stackCallback);
+        });
+
         // LESS
-        stack.push(function (stackCallback) {
+        stack.push(function(stackCallback){
             var lessSrcDir = path.join(srcDir, 'less');
             var lessDestDir = path.join(buildDir, 'css');
             less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
         });
 
-        // LESS in Components
-        stack.push(function (stackCallback) {
-            var lessSrcDir = path.join(srcDir, 'js');
-            var lessDestDir = path.join(buildDir, 'js');
-            less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
-        });
-
-        // JS Components
-
         // copy
-        stack.push(function (stackCallback) {
-            fse.copy(srcDir, buildDir, function (err) {
-                if (err) {
+        stack.push(function(stackCallback){
+            fse.copy(srcDir, buildDir, function(err){
+                if (err){
                     grunt.log.warn(err);
                 }
                 stackCallback(err);
@@ -82,7 +79,7 @@ module.exports = function (grunt) {
         });
 
         // Delete work files
-        stack.push(function (stackCallback) {
+        stack.push(function(stackCallback){
 
             var lessDestDir = path.join(buildDir, 'less');
             if (grunt.file.exists(lessDestDir)){
@@ -98,8 +95,8 @@ module.exports = function (grunt) {
             stackCallback(null);
         });
 
-        async.series(stack, function (err) {
-            if (err) {
+        async.series(stack, function(err){
+            if (err){
                 done(false);
             } else {
                 done();
