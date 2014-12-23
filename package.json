@@ -49,6 +49,8 @@
     "grunt-contrib-jshint": "^0.10.0",
     "less": "^2.1.2",
     "mout": "^0.11.0",
-    "uglify-js": "^2.4.16"
+    "uglify-js": "^2.4.16",
+    "merge": "^1.2.0",
+    "winston": "^0.8.3"
   }
 }

@@ -9,34 +9,28 @@
 
 'use strict';
 
-var path = require('path');
-var fse = require('fs-extra');
-var fs = require('fs');
-var async = require('async');
-var glob = require('glob');
+var config = require('../lib/config.js').instance();
 
-var less = require('../lib/less.js');
-var jscomp = require('../lib/jscomp.js');
+var AbricosModule = require('../lib/module.js');
 
 module.exports = function(grunt){
 
-    // ------------ Abricos Module Builder -------------
-
-    var checkAbricosModule = function(projectDir){
-        var fileModulePhp = path.join(projectDir, 'src', 'module.php');
-        var isExists = grunt.file.exists(fileModulePhp);
-
-        return isExists;
-    };
-
     grunt.registerMultiTask('abmodule', 'Build Abricos Module', function(){
 
-        var options = this.options({
-            directory: process.cwd(),
-            buildDir: 'build',
-            cleanBuildDir: true,
-            lessOptions: {}
-        });
+        var options = this.options();
+        var abModule;
+        try {
+            abModule = new AbricosModule(options);
+        } catch (e) {
+            config.logger().error("Build Abricos Module '" + options.name + "', message: " + e.message);
+            return;
+        }
+
+        abModule.jsBuild();
+
+        this.async()();
+        return; ///////////////////
+
 
         var projectDir = options.directory;
 
