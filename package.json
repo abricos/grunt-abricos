@@ -1,7 +1,7 @@
 {
   "name": "grunt-abricos",
   "description": "Grunt plugin for Abricos Platform",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "homepage": "https://github.com/abricos/grunt-abricos",
   "author": {
     "name": "Alexander Kuzmin",
