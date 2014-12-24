@@ -9,12 +9,12 @@ var path = require('path');
 module.exports = function(grunt){
 
     var config = require('./lib/config').instance();
+    var buildDir = config.pathResolve('directory', 'build.dir', true);
 
     if (grunt.multik){
 
         var dependency = grunt.multik.currentDependency;
         var dependDir = dependency.directory;
-        var buildDir = config.get('build.dir');
 
         if (dependency.name === 'core') {
 
@@ -63,11 +63,6 @@ module.exports = function(grunt){
                     build: {
                         options: {
                             name: dependency.name
-                            /*
-                            build: {
-                                dir: path.join(buildDir, 'modules', dependency.name)
-                            }
-                            /**/
                         }
                     }
                 },
