@@ -10,6 +10,7 @@ module.exports = function(grunt){
 
     var config = require('./lib/config').instance();
     var buildDir = config.pathResolve('directory', 'build.dir', true);
+    config.pathResolve('directory', 'temp.dir', true);
 
     if (grunt.multik){
 
