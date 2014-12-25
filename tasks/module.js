@@ -9,20 +9,21 @@
 
 'use strict';
 
-var config = require('../lib/config.js').instance();
-
-var AbricosModule = require('../lib/module.js');
+var Module = require('../lib/module.js');
 
 module.exports = function(grunt){
 
     grunt.registerMultiTask('abmodule', 'Build Abricos Module', function(){
 
+        var config = require('../lib/config.js').instance();
+        config.load();
+
         var options = this.options();
         var abModule;
         try {
-            abModule = new AbricosModule(options);
+            abModule = new Module(options);
         } catch (e) {
-            config.logger().error("Build Abricos Module '" + options.name + "', message: " + e.message);
+            config.logger().error("Initialize Module '" + options.name + "', message: " + e.message);
             return;
         }
 

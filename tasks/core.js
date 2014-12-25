@@ -14,8 +14,6 @@ var fs = require('fs');
 var fse = require('fs-extra');
 var async = require('async');
 
-var less = require('../lib/less.js');
-
 module.exports = function(grunt) {
 
     // ------------ Abricos Core Builder -------------

@@ -14,8 +14,6 @@ var path = require('path');
 var fse = require('fs-extra');
 var fs = require('fs');
 
-var less = require('../lib/less.js');
-
 module.exports = function (grunt) {
 
     // ------------ Abricos Template Builder -------------
