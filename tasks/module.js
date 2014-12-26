@@ -29,7 +29,7 @@ module.exports = function(grunt){
 
         var done = this.async();
 
-        abModule.jsBuild(function(err){
+        abModule.build(function(err){
             done(err);
         });
 
