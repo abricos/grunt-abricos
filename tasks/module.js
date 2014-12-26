@@ -9,7 +9,7 @@
 
 'use strict';
 
-var Module = require('../lib/module.js');
+var Module = require('../lib/module');
 
 module.exports = function(grunt){
 
