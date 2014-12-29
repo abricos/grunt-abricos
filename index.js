@@ -17,11 +17,9 @@ module.exports = function(grunt){
 
             grunt.initConfig({
                 abmodule: {
-                    options: {
-                        directory: dependDir
-                    },
                     build: {
                         options: {
+                            directory: dependDir,
                             name: dependency.name
                         }
                     }
@@ -58,11 +56,11 @@ module.exports = function(grunt){
                 abcore: {
                     build: {
                         options: {
-                            directory: dependDir,
-                            buildDir: buildDir
+                            directory: dependDir
                         }
                     }
                 },
+                /*
                 abvendor: {
                     options: {
                         directory: dependDir,
@@ -79,6 +77,7 @@ module.exports = function(grunt){
                         }
                     }
                 },
+                /**/
                 watch: {
                     files: [path.join(dependDir, 'src/**/*')],
                     tasks: ['abcore:build']
@@ -86,7 +85,7 @@ module.exports = function(grunt){
             });
 
             grunt.registerTask('init', ['abvendor:init']);
-            grunt.registerTask('build', ['abcore:build', 'abvendor:build']);
+            grunt.registerTask('build', ['abcore:build']);
             grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
 
         } else if (dependency.group === 'template'){

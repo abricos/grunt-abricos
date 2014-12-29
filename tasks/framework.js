@@ -9,28 +9,29 @@
 
 'use strict';
 
-// var Core = require('../lib/core');
+var Framework = require('../lib/Framework');
+var Config = require('../lib/utils/Config');
+var logHelper = require('../lib/utils/loghelper');
 
-module.exports = function(grunt) {
-    grunt.registerMultiTask('abcore', 'Build Abricos Core', function() {
-
-        return;
-
-        var config = require('../lib/config').instance();
-        config.load();
+module.exports = function(grunt){
+    grunt.registerMultiTask('abcore', 'Build Abricos Framework', function(){
 
         var options = this.options();
-        var abCore;
+        var config = Config.instance();
+
+        var logger = config.logger();
+        logger.info('start framework build');
+
+        var framework;
         try {
-            abCore = new Core(options);
+            framework = new Framework(options);
         } catch (e) {
-            config.logger().error("Initialize Core', message: " + e.message);
+            logger.error('initialize framework, message=%s', logHelper.string(e.message));
             return;
         }
 
         var done = this.async();
-
-        abCore.build(function(err){
+        framework.build(function(err){
             done(err);
         });
 
@@ -39,11 +40,12 @@ module.exports = function(grunt) {
         var srcDir = path.resolve(projectDir, 'src');
         var buildDir = path.resolve(projectDir, options.buildDir);
 
+
         var done = this.async();
         var stack = [];
 
         // LESS
-        stack.push(function (stackCallback) {
+        stack.push(function(stackCallback){
             var lessSrcDir = path.join(srcDir, 'tt/default/less');
             var lessDestDir = path.join(buildDir, 'tt/default/css');
             less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
@@ -56,15 +58,15 @@ module.exports = function(grunt) {
         });
 
         // Delete work files
-        stack.push(function (stackCallback) {
+        stack.push(function(stackCallback){
             var lessDestDir = path.join(buildDir, 'tt/default/less');
             fse.removeSync(lessDestDir);
 
             stackCallback(null);
         });
 
-        async.series(stack, function (err) {
-            if (err) {
+        async.series(stack, function(err){
+            if (err){
                 done(false);
             } else {
                 done();

@@ -20,13 +20,13 @@ module.exports = function(grunt){
         var config = Config.instance();
 
         var logger = config.logger();
-        logger.info("start build Module %s", logHelper.string(options.name));
+        logger.info('start module %s build', logHelper.string(options.name));
 
         var abModule;
         try {
             abModule = new Module(options);
         } catch (e) {
-            logger.error("Initialize Module '" + options.name + "', message: " + e.message);
+            logger.error('initialize Module %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
             return;
         }
 
