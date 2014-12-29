@@ -9,35 +9,32 @@
 
 'use strict';
 
-var path = require('path');
-var fs = require('fs');
-var fse = require('fs-extra');
-var async = require('async');
+// var Core = require('../lib/core');
 
 module.exports = function(grunt) {
-
-    // ------------ Abricos Core Builder -------------
-
-    var checkAbricosCore = function(projectDir) {
-        var fileModulePhp = path.join(projectDir, 'src', 'index.php');
-        var isExists = fs.existsSync(fileModulePhp);
-
-        return isExists;
-    };
-
     grunt.registerMultiTask('abcore', 'Build Abricos Core', function() {
-        var options = this.options({
-            directory: process.cwd(),
-            buildDir: 'build'
-        });
 
-        var projectDir = options.directory;
+        return;
 
-        var isModule = checkAbricosCore(projectDir);
-        if (!isModule) {
-            grunt.log.warn('Abricos core "' + projectDir + '" not found.');
+        var config = require('../lib/config').instance();
+        config.load();
+
+        var options = this.options();
+        var abCore;
+        try {
+            abCore = new Core(options);
+        } catch (e) {
+            config.logger().error("Initialize Core', message: " + e.message);
             return;
         }
+
+        var done = this.async();
+
+        abCore.build(function(err){
+            done(err);
+        });
+
+        return; ////////////////////////////////
 
         var srcDir = path.resolve(projectDir, 'src');
         var buildDir = path.resolve(projectDir, options.buildDir);

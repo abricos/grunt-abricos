@@ -8,16 +8,51 @@ var path = require('path');
 
 module.exports = function(grunt){
 
-    var config = require('./lib/config').instance();
-    var buildDir = config.pathResolve('directory', 'build.dir', true);
-    config.pathResolve('directory', 'temp.dir', true);
-
     if (grunt.multik){
 
         var dependency = grunt.multik.currentDependency;
         var dependDir = dependency.directory;
 
-        if (dependency.name === 'core') {
+        if (dependency.group === 'module'){
+
+            grunt.initConfig({
+                abmodule: {
+                    options: {
+                        directory: dependDir
+                    },
+                    build: {
+                        options: {
+                            name: dependency.name
+                        }
+                    }
+                },
+                abvendor: {
+                    options: {
+                        directory: dependDir
+                        // , buildDir: path.join(buildDir, 'vendor')
+                    },
+                    init: {
+                        options: {
+                            install: true
+                        }
+                    },
+                    build: {
+                        options: {
+                            install: false
+                        }
+                    }
+                },
+                watch: {
+                    files: [path.join(dependDir, 'src/**/*')],
+                    tasks: ['abmodule:build']
+                }
+            });
+
+            grunt.registerTask('init', ['abvendor:init']);
+            grunt.registerTask('build', ['abmodule:build', 'abvendor:build']);
+            grunt.registerTask('buildinst', ['abmodule:build', 'abvendor:build']);
+
+        } else if (dependency.name === 'core'){
 
             grunt.initConfig({
                 abcore: {
@@ -54,46 +89,7 @@ module.exports = function(grunt){
             grunt.registerTask('build', ['abcore:build', 'abvendor:build']);
             grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
 
-        } else if (dependency.group === 'module') {
-
-            grunt.initConfig({
-                abmodule: {
-                    options: {
-                        directory: dependDir
-                    },
-                    build: {
-                        options: {
-                            name: dependency.name
-                        }
-                    }
-                },
-                abvendor: {
-                    options: {
-                        directory: dependDir,
-                        buildDir: path.join(buildDir, 'vendor')
-                    },
-                    init: {
-                        options: {
-                            install: true
-                        }
-                    },
-                    build: {
-                        options: {
-                            install: false
-                        }
-                    }
-                },
-                watch: {
-                    files: [path.join(dependDir, 'src/**/*')],
-                    tasks: ['abmodule:build']
-                }
-            });
-
-            grunt.registerTask('init', ['abvendor:init']);
-            grunt.registerTask('build', ['abmodule:build', 'abvendor:build']);
-            grunt.registerTask('buildinst', ['abmodule:build', 'abvendor:build']);
-
-        } else if (dependency.group === 'template') {
+        } else if (dependency.group === 'template'){
 
             grunt.initConfig({
                 abtemplate: {
@@ -112,7 +108,7 @@ module.exports = function(grunt){
             grunt.registerTask('build', ['abtemplate:build']);
             grunt.registerTask('buildinst', ['abtemplate:build']);
 
-        } else if (dependency.group === 'installer' && dependency.name === 'install') {
+        } else if (dependency.group === 'installer' && dependency.name === 'install'){
 
             grunt.initConfig({
                 copy: {
@@ -129,7 +125,7 @@ module.exports = function(grunt){
             grunt.registerTask('build', []);
             grunt.registerTask('buildinst', ['copy']);
 
-        } else if (dependency.group === 'vendor' && dependency.name === 'abricos.js') {
+        } else if (dependency.group === 'vendor' && dependency.name === 'abricos.js'){
 
             grunt.initConfig({
                 copy: {
