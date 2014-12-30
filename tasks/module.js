@@ -22,16 +22,24 @@ module.exports = function(grunt){
         var logger = config.logger();
         logger.info('start module %s build', logHelper.string(options.name));
 
-        var abModule;
+        var component;
         try {
-            abModule = new Module(options);
+            component = new Module(options);
         } catch (e) {
             logger.error('initialize Module %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
             return;
         }
 
-        var done = this.async();
-        abModule.build(function(err){
+        var done = this.async(),
+            fnName = options.action;
+
+        if (typeof component[fnName] !== 'function'){
+            logger.error('action %s not found in Module', logHelper.string(options.action));
+            done();
+            return;
+        }
+
+        component[fnName](function(err){
             done(err);
         });
     });

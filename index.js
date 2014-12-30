@@ -17,26 +17,27 @@ module.exports = function(grunt){
 
             grunt.initConfig({
                 abmodule: {
-                    build: {
-                        options: {
-                            directory: dependDir,
-                            name: dependency.name
-                        }
-                    }
-                },
-                abvendor: {
                     options: {
-                        directory: dependDir
-                        // , buildDir: path.join(buildDir, 'vendor')
+                        directory: dependDir,
+                        name: dependency.name
                     },
                     init: {
                         options: {
-                            install: true
+                            action: 'init'
                         }
                     },
                     build: {
                         options: {
-                            install: false
+                            directory: dependDir,
+                            name: dependency.name,
+                            action: 'build'
+                        }
+                    },
+                    info: {
+                        options: {
+                            directory: dependDir,
+                            name: dependency.name,
+                            action: 'info'
                         }
                     }
                 },
@@ -46,9 +47,13 @@ module.exports = function(grunt){
                 }
             });
 
-            grunt.registerTask('init', ['abvendor:init']);
-            grunt.registerTask('build', ['abmodule:build', 'abvendor:build']);
-            grunt.registerTask('buildinst', ['abmodule:build', 'abvendor:build']);
+            // grunt.registerTask('init', ['abvendor:init']);
+            // grunt.registerTask('build', ['abmodule:build', 'abvendor:build']);
+            // grunt.registerTask('buildinst', ['abmodule:build', 'abvendor:build']);
+
+            grunt.registerTask('init', ['abmodule:init']);
+            grunt.registerTask('build', ['abmodule:build']);
+            grunt.registerTask('info', ['abmodule:info']);
 
         } else if (dependency.name === 'core'){
 
@@ -56,37 +61,28 @@ module.exports = function(grunt){
                 abcore: {
                     build: {
                         options: {
-                            directory: dependDir
+                            directory: dependDir,
+                            action: 'build'
+                        }
+                    },
+                    info: {
+                        options: {
+                            directory: dependDir,
+                            action: 'info'
                         }
                     }
                 },
-                /*
-                abvendor: {
-                    options: {
-                        directory: dependDir,
-                        buildDir: path.join(buildDir, 'vendor')
-                    },
-                    init: {
-                        options: {
-                            install: true
-                        }
-                    },
-                    build: {
-                        options: {
-                            install: false
-                        }
-                    }
-                },
-                /**/
                 watch: {
                     files: [path.join(dependDir, 'src/**/*')],
                     tasks: ['abcore:build']
                 }
             });
 
-            grunt.registerTask('init', ['abvendor:init']);
+            // grunt.registerTask('init', ['abvendor:init']);
+            // grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
+
             grunt.registerTask('build', ['abcore:build']);
-            grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
+            grunt.registerTask('info', ['abcore:info']);
 
         } else if (dependency.group === 'template'){
 

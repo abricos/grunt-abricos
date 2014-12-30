@@ -20,57 +20,27 @@ module.exports = function(grunt){
         var config = Config.instance();
 
         var logger = config.logger();
-        logger.info('start framework build');
+        logger.info('start Framework build');
 
-        var framework;
+        var component;
         try {
-            framework = new Framework(options);
+            component = new Framework(options);
         } catch (e) {
-            logger.error('initialize framework, message=%s', logHelper.string(e.message));
+            logger.error('initialize component, message=%s', logHelper.string(e.message));
             return;
         }
 
-        var done = this.async();
-        framework.build(function(err){
+        var done = this.async(),
+            fnName = options.action;
+
+        if (typeof component[fnName] !== 'function'){
+            logger.error('action %s not found in Framework', logHelper.string(options.action));
+            done();
+            return;
+        }
+
+        component[fnName](function(err){
             done(err);
-        });
-
-        return; ////////////////////////////////
-
-        var srcDir = path.resolve(projectDir, 'src');
-        var buildDir = path.resolve(projectDir, options.buildDir);
-
-
-        var done = this.async();
-        var stack = [];
-
-        // LESS
-        stack.push(function(stackCallback){
-            var lessSrcDir = path.join(srcDir, 'tt/default/less');
-            var lessDestDir = path.join(buildDir, 'tt/default/css');
-            less(grunt, lessSrcDir, lessDestDir, options, stackCallback);
-        });
-
-        // copy
-        stack.push(function(stackCallback){
-            fse.copySync(srcDir, buildDir);
-            stackCallback(null);
-        });
-
-        // Delete work files
-        stack.push(function(stackCallback){
-            var lessDestDir = path.join(buildDir, 'tt/default/less');
-            fse.removeSync(lessDestDir);
-
-            stackCallback(null);
-        });
-
-        async.series(stack, function(err){
-            if (err){
-                done(false);
-            } else {
-                done();
-            }
         });
     });
 };
