@@ -9,24 +9,24 @@
 
 'use strict';
 
-var Template = require('../lib/Template');
+var Site = require('../lib/Site');
 var Config = require('../lib/utils/Config');
 var logHelper = require('../lib/utils/loghelper');
 
 module.exports = function (grunt) {
 
-    grunt.registerMultiTask('abtemplate', 'Build Abricos Template', function () {
+    grunt.registerMultiTask('absite', 'Build Abricos Site', function () {
         var options = this.options();
         var config = Config.instance();
 
         var logger = config.logger();
-        logger.info('start template %s build', logHelper.string(options.name));
+        logger.info('start site build');
 
         var component;
         try {
-            component = new Template(options);
+            component = new Site(options);
         } catch (e) {
-            logger.error('initialize template %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
+            logger.error('initialize site %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
             return;
         }
 
@@ -34,7 +34,7 @@ module.exports = function (grunt) {
             fnName = options.action;
 
         if (typeof component[fnName] !== 'function'){
-            logger.error('action %s not found in Template', logHelper.string(options.action));
+            logger.error('action %s not found in Site', logHelper.string(options.action));
             done();
             return;
         }

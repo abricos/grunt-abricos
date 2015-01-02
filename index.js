@@ -28,15 +28,11 @@ module.exports = function(grunt){
                     },
                     build: {
                         options: {
-                            directory: dependDir,
-                            name: dependency.name,
                             action: 'build'
                         }
                     },
                     info: {
                         options: {
-                            directory: dependDir,
-                            name: dependency.name,
                             action: 'info'
                         }
                     }
@@ -96,19 +92,30 @@ module.exports = function(grunt){
             grunt.initConfig({
                 abtemplate: {
                     options: {
-                        directory: dependDir
+                        directory: dependDir,
+                        name: dependency.name
+                    },
+                    init: {
+                        options: {
+                            action: 'init'
+                        }
                     },
                     build: {
                         options: {
-                            buildDir: path.join(buildDir, 'tt', dependency.name)
+                            action: 'build'
+                        }
+                    },
+                    info: {
+                        options: {
+                            action: 'info'
                         }
                     }
                 }
             });
 
-            grunt.registerTask('init', []);
+            grunt.registerTask('init', ['abtemplate:init']);
             grunt.registerTask('build', ['abtemplate:build']);
-            grunt.registerTask('buildinst', ['abtemplate:build']);
+            grunt.registerTask('info', ['abtemplate:info']);
 
         } else if (dependency.group === 'installer' && dependency.name === 'install'){
 
@@ -127,24 +134,6 @@ module.exports = function(grunt){
             grunt.registerTask('build', []);
             grunt.registerTask('buildinst', ['copy']);
 
-        } else if (dependency.group === 'vendor' && dependency.name === 'abricos.js'){
-
-            grunt.initConfig({
-                copy: {
-                    main: {
-                        cwd: path.join(dependDir),
-                        dest: path.join(buildDir, 'vendor', dependency.name),
-                        expand: true,
-                        flatten: true,
-                        src: ['src/**/*', 'README.md', 'LICENSE']
-                    }
-                }
-            });
-
-            grunt.registerTask('init', []);
-            grunt.registerTask('build', ['copy']);
-            grunt.registerTask('buildinst', ['copy']);
-
         } else {
 
             grunt.registerTask('default', []);
@@ -154,77 +143,36 @@ module.exports = function(grunt){
 
         }
 
-        grunt.loadNpmTasks('grunt-abricos');
-
     } else {
 
-        var config = require('./lib/config');
-
-        var tplTaskKeys = [], tplTasks = {},
-            tpsDir = path.join(ROOT, 'templates');
-
-        if (grunt.file.isDir(tpsDir)){
-            var dirs = fs.readdirSync(tpsDir);
-            for (var i = 0; i < dirs.length; i++){
-                var dir = dirs[i], key = 'build' + i;
-                tplTaskKeys[tplTaskKeys.length] = 'abtemplate:' + key
-                tplTasks[key] = {
+        grunt.initConfig({
+            absite: {
+                options: {
+                    directory: process.cwd()
+                },
+                init: {
                     options: {
-                        directory: path.join('templates', dir),
-                        buildDir: path.join(BUILD_DIR, 'tt', dir),
-                        cleanBuildDir: false
+                        action: 'init'
                     }
-                };
-            }
-        }
-
-        var tasks = {
-            copy: {
-                src: {
-                    files: [
-                        {
-                            expand: true,
-                            cwd: 'src',
-                            src: [
-                                '**/*',
-                                '.htaccess'
-                            ],
-                            dest: BUILD_DIR
-                        }
-                    ]
+                },
+                build: {
+                    options: {
+                        action: 'build'
+                    }
+                },
+                info: {
+                    options: {
+                        action: 'info'
+                    }
                 }
-            },
-            watch: {
-                files: [
-                    'src/**/*',
-                    'templates/**/*'
-                ],
-                tasks: ['build']
-            },
-            clean: {
-                buildinst: path.join(BUILD_DIR, 'includes', 'config.php')
             }
-        };
+        });
 
-        if (tplTaskKeys.length > 0){
-            tasks['abtemplate'] = tplTasks;
-        }
-
-        grunt.initConfig(tasks);
-
-        grunt.registerTask('init', []);
-
-        tplTaskKeys[tplTaskKeys.length] = 'copy:src';
-        grunt.registerTask('build', tplTaskKeys);
-
-        tplTaskKeys = grunt.util.toArray(tplTaskKeys);
-
-        tplTaskKeys[tplTaskKeys.length] = 'clean:buildinst';
-        grunt.registerTask('buildinst', tplTaskKeys);
+        grunt.registerTask('init', ['absite:init']);
+        grunt.registerTask('build', ['absite:build']);
+        grunt.registerTask('info', ['absite:info']);
     }
 
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-abricos');
 
 };

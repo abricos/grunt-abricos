@@ -26,7 +26,7 @@ module.exports = function(grunt){
         try {
             component = new Framework(options);
         } catch (e) {
-            logger.error('initialize component, message=%s', logHelper.string(e.message));
+            logger.error('initialize Framework, message=%s', logHelper.string(e.message));
             return;
         }
 
