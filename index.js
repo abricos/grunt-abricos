@@ -59,15 +59,21 @@ module.exports = function(grunt){
 
             grunt.initConfig({
                 abcore: {
+                    options: {
+                        directory: dependDir
+                    },
+                    init: {
+                        options: {
+                            action: 'init'
+                        }
+                    },
                     build: {
                         options: {
-                            directory: dependDir,
                             action: 'build'
                         }
                     },
                     info: {
                         options: {
-                            directory: dependDir,
                             action: 'info'
                         }
                     }
@@ -81,6 +87,7 @@ module.exports = function(grunt){
             // grunt.registerTask('init', ['abvendor:init']);
             // grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
 
+            grunt.registerTask('init', ['abcore:init']);
             grunt.registerTask('build', ['abcore:build']);
             grunt.registerTask('info', ['abcore:info']);
 
