@@ -43,10 +43,6 @@ module.exports = function(grunt){
                 }
             });
 
-            // grunt.registerTask('init', ['abvendor:init']);
-            // grunt.registerTask('build', ['abmodule:build', 'abvendor:build']);
-            // grunt.registerTask('buildinst', ['abmodule:build', 'abvendor:build']);
-
             grunt.registerTask('init', ['abmodule:init']);
             grunt.registerTask('build', ['abmodule:build']);
             grunt.registerTask('info', ['abmodule:info']);
@@ -79,9 +75,6 @@ module.exports = function(grunt){
                     tasks: ['abcore:build']
                 }
             });
-
-            // grunt.registerTask('init', ['abvendor:init']);
-            // grunt.registerTask('buildinst', ['abcore:build', 'abvendor:build']);
 
             grunt.registerTask('init', ['abcore:init']);
             grunt.registerTask('build', ['abcore:build']);
@@ -118,14 +111,14 @@ module.exports = function(grunt){
             grunt.registerTask('info', ['abtemplate:info']);
 
         } else if (dependency.group === 'installer' && dependency.name === 'install'){
-
+/*
             grunt.initConfig({
                 copy: {
                     main: {
                         cwd: path.join(dependDir, 'src'),
                         dest: path.join(buildDir, dependency.name),
                         expand: true,
-                        src: ['**/*']
+                        src: ['** / *']
                     }
                 }
             });
@@ -133,7 +126,7 @@ module.exports = function(grunt){
             grunt.registerTask('init', []);
             grunt.registerTask('build', []);
             grunt.registerTask('buildinst', ['copy']);
-
+            /**/
         } else {
 
             grunt.registerTask('default', []);
