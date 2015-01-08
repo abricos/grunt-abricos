@@ -38,7 +38,11 @@ module.exports = function(grunt){
                     }
                 },
                 watch: {
-                    files: [path.join(dependDir, 'src/**/*')],
+                    files: [
+                        path.join(dependDir, 'src/**/*'),
+                        path.join(dependDir, 'modules/**/*'),
+                        path.join(dependDir, 'templates/**/*')
+                    ],
                     tasks: ['abmodule:build']
                 }
             });
