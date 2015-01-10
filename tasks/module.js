@@ -11,7 +11,7 @@
 
 var Module = require('../lib/Module');
 var Config = require('../lib/utils/Config');
-var logHelper = require('../lib/utils/loghelper');
+var logHelper = Config.logHelper;
 
 module.exports = function(grunt){
     grunt.registerMultiTask('abmodule', 'Build Abricos Module', function(){
