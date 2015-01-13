@@ -35,6 +35,11 @@ module.exports = function(grunt){
                         options: {
                             action: 'info'
                         }
+                    },
+                    testAPI: {
+                        options: {
+                            action: 'testAPI'
+                        }
                     }
                 },
                 watch: {
@@ -50,6 +55,7 @@ module.exports = function(grunt){
             grunt.registerTask('init', ['abmodule:init']);
             grunt.registerTask('build', ['abmodule:build']);
             grunt.registerTask('info', ['abmodule:info']);
+            grunt.registerTask('testAPI', ['abmodule:testAPI']);
 
         } else if (dependency.name === 'core'){
 
