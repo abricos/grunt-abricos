@@ -11,7 +11,7 @@
 
 var Template = require('../lib/Template');
 var Config = require('../lib/utils/Config');
-var logHelper = Config.logHelper;
+var logHelper = Config.utils.helper;
 
 module.exports = function (grunt) {
 

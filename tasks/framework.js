@@ -11,7 +11,7 @@
 
 var Framework = require('../lib/Framework');
 var Config = require('../lib/utils/Config');
-var logHelper = Config.logHelper;
+var logHelper = Config.utils.helper;
 
 module.exports = function(grunt){
     grunt.registerMultiTask('abcore', 'Build Abricos Framework', function(){

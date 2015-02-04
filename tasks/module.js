@@ -10,13 +10,14 @@
 'use strict';
 
 var Module = require('../lib/Module');
-var Config = require('../lib/utils/Config');
-var logHelper = Config.logHelper;
+var treeConfig = require('../lib/utils/Config');
+
+var logHelper = treeConfig.utils.helper;
 
 module.exports = function(grunt){
     grunt.registerMultiTask('abmodule', 'Build Abricos Module', function(){
         var options = this.options();
-        var config = Config.instance();
+        var config = treeConfig.instance();
 
         var logger = config.logger();
         logger.info('start module %s build', logHelper.string(options.name));
