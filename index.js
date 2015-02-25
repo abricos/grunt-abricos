@@ -178,6 +178,13 @@ module.exports = function(grunt){
                         action: 'info'
                     }
                 }
+            },
+            watch: {
+                files: [
+                    'src/**/*',
+                    'templates/**/*'
+                ],
+                tasks: ['absite:build']
             }
         });
 

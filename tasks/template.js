@@ -10,23 +10,27 @@
 'use strict';
 
 var Template = require('../lib/Template');
-var Config = require('../lib/utils/Config');
-var logHelper = Config.utils.helper;
+var config = require('../lib/utils/config');
 
-module.exports = function (grunt) {
+module.exports = function(grunt){
 
-    grunt.registerMultiTask('abtemplate', 'Build Abricos Template', function () {
+    grunt.registerMultiTask('abtemplate', 'Build Abricos Template', function(){
         var options = this.options();
-        var config = Config.instance();
 
         var logger = config.logger();
+        var logHelper = logger.helper;
+
         logger.info('start template %s build', logHelper.string(options.name));
 
         var component;
         try {
-            component = new Template(options);
+            component = new Template(options.name, options);
         } catch (e) {
-            logger.error('initialize template %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
+            logger.error(
+                'initialize template %s, message=%s',
+                logHelper.string(options.name),
+                logHelper.string(e.message)
+            );
             return;
         }
 

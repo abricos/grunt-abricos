@@ -10,16 +10,15 @@
 'use strict';
 
 var Framework = require('../lib/Framework');
-var Config = require('../lib/utils/Config');
-var logHelper = Config.utils.helper;
+var config = require('../lib/utils/config');
+var logHelper = config.logger().helper;
 
 module.exports = function(grunt){
     grunt.registerMultiTask('abcore', 'Build Abricos Framework', function(){
 
         var options = this.options();
-        var config = Config.instance();
-
         var logger = config.logger();
+
         logger.info('start Framework build');
 
         var component;

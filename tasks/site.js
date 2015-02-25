@@ -10,16 +10,16 @@
 'use strict';
 
 var Site = require('../lib/Site');
-var Config = require('../lib/utils/Config');
-var logHelper = Config.utils.helper;
+var config = require('../lib/utils/config');
 
 module.exports = function (grunt) {
 
     grunt.registerMultiTask('absite', 'Build Abricos Site', function () {
         var options = this.options();
-        var config = Config.instance();
 
         var logger = config.logger();
+        var logHelper = logger.helper;
+
         logger.info('start site build');
 
         var component;

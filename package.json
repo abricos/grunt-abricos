@@ -53,7 +53,7 @@
     "mocha": "^2.1.0",
     "mout": "^0.11.0",
     "should": "^4.5.0",
-    "tree-config": "^0.2.1",
+    "tree-config": "^0.3.0",
     "uglify-js": "^2.4.16"
   }
 }
