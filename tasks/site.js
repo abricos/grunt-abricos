@@ -26,7 +26,11 @@ module.exports = function (grunt) {
         try {
             component = new Site(options);
         } catch (e) {
-            logger.error('initialize site %s, message=%s', logHelper.string(options.name), logHelper.string(e.message));
+            logger.error(
+                'initialize site %s, message=%s',
+                logHelper.string(options.name),
+                logHelper.string(e.message)
+            );
             return;
         }
 
